@@ -5,6 +5,6 @@ export default function Item({ name, quantity, category }) {
             <h2 className="text-xl font-bold">{name}</h2>
             <div className="text-sm"> Buy {quantity} in {category}</div>
             </li>
-            </main>
+        </main>
     );
 };
