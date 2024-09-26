@@ -56,7 +56,7 @@ export default function ItemList() {
       };
        
       const item10 = {
-        name: "paper towels, 6 pack",
+        name: "paper towels, 6 pack ",
         quantity: 1,
         category: "household",
       };

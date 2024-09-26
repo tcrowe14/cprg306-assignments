@@ -2,7 +2,7 @@ import "./globals.css";
 
 export const metadata = {
   title: "Shopping List",
-  description: "Web Dev 2 Demos",
+  description: "Shopping List",
 };
 
 export default function RootLayout({ children }) {
