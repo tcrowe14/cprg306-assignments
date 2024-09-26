@@ -13,12 +13,12 @@ export default function NewItem() {
                 {quantity}
             </div>
             <div className="flex w-12 justify-center items-center pl-2 pr-1">
-                <button className="w-12 bg-red-600 hover:bg-red-500 disabled:bg-gray-400 font-bold rounded-md focus:outline-none focus:ring-2 focus:ring-red-400" onClick={decrement} disabled={quantity == 1}>
+                <button className="w-12 bg-red-600 hover:bg-red-500 disabled:bg-gray-400 font-bold rounded-md active:outline-none active:ring-2 active:ring-red-400" onClick={decrement} disabled={quantity == 1}>
                     -
                 </button>
             </div>
             <div className="flex w-12 justify-center items-center pr-2 pl-1">
-                <button className="w-12 bg-green-600 hover:bg-green-500 disabled:bg-gray-400 font-bold rounded-md focus:outline-none focus:ring-2 focus:ring-green-400" onClick={increment} disabled={quantity == 20}>
+                <button className="w-12 bg-green-600 hover:bg-green-500 disabled:bg-gray-400 font-bold rounded-md active:outline-none active:ring-2 active:ring-green-400" onClick={increment} disabled={quantity == 20}>
                     +
             </button>
             </div>
