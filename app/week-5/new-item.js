@@ -3,9 +3,9 @@
 import { useState } from "react";
 
 export default function NewItem() {
-  const [quantity, setQuantity] = useState(1); // Default quantity to 1
+  const [quantity, setQuantity] = useState(1);
   const [name, setName] = useState("");
-  const [category, setCategory] = useState("Produce"); // Default selected category
+  const [category, setCategory] = useState("Produce");
 
   const increment = () => {
     if (quantity < 20) {
@@ -22,14 +22,20 @@ export default function NewItem() {
   const handleSubmit = (event) => {
     event.preventDefault();
     alert(`Added to Shopping list: ${quantity} of ${name} in ${category}`);
-
+    setQuantity(1);
+    setName("");
+    setCategory("Produce");
   };
 
   return (
     <form className="p-2 m-4 bg-red-200 text-black max-w-sm w-full" onSubmit={handleSubmit}>
       <div className="mb-2">
         <input
-          type="text" placeholder="Item name" required className="w-full h-10 mt-1 border-2 border-red-100 p-2 rounded-md font-sans" value={name}
+          type="text"
+          placeholder="Item name"
+          required
+          className="w-full h-10 mt-1 border-2 border-red-100 p-2 rounded-md font-sans font-bold"
+          value={name}
           onChange={(e) => setName(e.target.value)}
         />
       </div>
@@ -58,9 +64,10 @@ export default function NewItem() {
           </div>
         </div>
         <select
-          className="ml-1 border-2 h-10 border-red-100 p-2 rounded-md font-sans"
+          className="ml-1 border-2 h-10 border-red-100 p-2 rounded-md font-sans font-bold"
           value={category}
-          onChange={(e) => setCategory(e.target.value)}>
+          onChange={(e) => setCategory(e.target.value)}
+        >
           <option value="" disabled>
             Category
           </option>
@@ -77,10 +84,7 @@ export default function NewItem() {
           <option value="Other">Other</option>
         </select>
       </div>
-      <button
-        type="submit"
-        className="w-full h-10 mt-4 py-2 px-4 bg-red-300 text-white hover:bg-green-500 hover:border-green-600 border-2 border-red-100 p-2 rounded-md font-sans"
-      >
+      <button type="submit" className={`w-full h-10 mt-4 py-2 px-4 border-2 p-2 rounded-md font-sans ${name ? "bg-red-300 border-red-100 text-white hover:bg-green-500 hover:border-green-600" : "bg-gray-400 text-gray-700 border-gray-100 cursor-not-allowed"}`} disabled={!name}>
         Add to Shopping List
       </button>
     </form>
