@@ -34,9 +34,7 @@ export default function DogForm() {
   const handleSubmit = (event) => {
     event.preventDefault();
     let dog = { name, breed, age };
-    console.log(dog); // eventually save to a database
-
-    // reset form
+    console.log(dog); 
     setName("");
     setBreed("");
     setAge(0);

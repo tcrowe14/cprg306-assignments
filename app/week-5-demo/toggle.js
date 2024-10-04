@@ -9,4 +9,4 @@ export default function Toggle() {
         {show && <p>Visible</p>}
       </div>
     );
-  }
+  };

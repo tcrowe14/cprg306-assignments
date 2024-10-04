@@ -5,7 +5,6 @@ export default function ControlledComponent() {
   
     const handleSubmit = (event) => {
       event.preventDefault();
-      // Do something with the form data
     };
   
     return (
