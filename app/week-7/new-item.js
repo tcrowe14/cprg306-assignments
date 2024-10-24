@@ -78,17 +78,17 @@ export default function NewItem({onAddItem}) {
           <option value="" disabled>
             Category
           </option>
-          <option value="Produce">Produce</option>
-          <option value="Dairy">Dairy</option>
-          <option value="Bakery">Bakery</option>
-          <option value="Meat">Meat</option>
-          <option value="Frozen Foods">Frozen Foods</option>
-          <option value="Canned Goods">Canned Goods</option>
-          <option value="Dry Goods">Dry Goods</option>
-          <option value="Beverages">Beverages</option>
-          <option value="Snacks">Snacks</option>
-          <option value="Household">Household</option>
-          <option value="Other">Other</option>
+          <option value="produce">Produce</option>
+          <option value="dairy">Dairy</option>
+          <option value="bakery">Bakery</option>
+          <option value="meat">Meat</option>
+          <option value="frozen foods">Frozen Foods</option>
+          <option value="canned goods">Canned Goods</option>
+          <option value="dry goods">Dry Goods</option>
+          <option value="beverages">Beverages</option>
+          <option value="snacks">Snacks</option>
+          <option value="household">Household</option>
+          <option value="other">Other</option>
         </select>
       </div>
       <button type="submit" className={`w-full h-10 mt-4 py-2 px-4 border-2 p-2 rounded-md font-sans ${name ? "bg-red-300 border-red-100 text-white hover:bg-green-500 hover:border-green-600" : "bg-gray-400 text-gray-700 border-gray-100 cursor-not-allowed"}`} disabled={!name}>
