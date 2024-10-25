@@ -8,27 +8,42 @@ async function fetchMealIdeas(ingredient) {
 }
 
 export default function MealIdeas(props) {
-    let ingredient = props.ingredient;
+    const ingredient = props.ingredient;
     const [meals, setMeals] = useState([]);
     const [message, setMessage] = useState('');
 
-    useEffect(() => {if(ingredient !== ''){loadMealIdeas(ingredient)}}, [ingredient]);
+    useEffect(() => {
+        if (ingredient !== '') {
+            loadMealIdeas();
+        }
+    }, [ingredient]);
 
-    function loadMealIdeas() {
-        let data = fetchMealIdeas(ingredient);
-        data.then((data) => {if(data.meals !== null){setMeals(data.meals); console.log(data.meals)} else{setMeals([])}});
+    async function loadMealIdeas() {
+        try {
+            const data = await fetchMealIdeas(ingredient);
+            if (data.meals) {
+                setMeals(data.meals);
+                setMessage('');
+            } else {
+                setMeals([]);
+                setMessage('No meals found =(');
+            }
+        } catch (error) {
+            setMessage('Error fetching meal ideas.');
+            console.error('Error:', error);
+        }
     }
 
     return (
-        <div className="space-y-2 overflow-y-scroll max-h-60 pt-2">
-            {meals.map(meal => (
-                <li key={meal} className="list-none">
+        <div className="space-y-2 max-h-80 pt-2">
+            {message && <p>{message}</p>}
+            {meals.length > 0 && meals.map((meal) => (
+                <li key={meal.idMeal} className="list-none">
                     <ul className="bg-red-200">
-                        <h1 className='text-xl'>{meal.strMeal}</h1>
+                        <h1 className="text-xl">{meal.strMeal}</h1>
                     </ul>
                 </li>
             ))}
         </div>
-    )
-
+    );
 }
