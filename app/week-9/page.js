@@ -3,6 +3,7 @@
 import { useUserAuth } from "./_utils/auth-context";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function Page() {
     const { user, gitHubSignIn, firebaseSignOut } = useUserAuth();
@@ -11,7 +12,7 @@ export default function Page() {
     const home = async () => {
         router.push("/");
     };
-    
+
     const login = async () => {
         await gitHubSignIn();
         router.push("/week-9/shopping-list");
@@ -20,6 +21,12 @@ export default function Page() {
     const logout = async () => {
         await firebaseSignOut();
     };
+
+    useEffect(() => {
+        if (user) {
+            router.push("/week-9/shopping-list");
+        }
+    }, [user, router]);
 
     if (user === null) {
         return (
