@@ -83,6 +83,7 @@ export default function Page() {
                 <section className="flex">
                     <ItemList items={items} onItemSelect={handleItemSelect}/>
                 </section>
+                <button onClick={firebaseSignOut}>Logout</button>
                 </div>
 
                 <div className="w-2/3 ml-3 max-h-full overflow-y-auto">
