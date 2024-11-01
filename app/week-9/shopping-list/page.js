@@ -5,16 +5,22 @@ import NewItem from "./new-item";
 import itemData from "./items.json";
 import { useState } from "react";
 import { useUserAuth } from "../_utils/auth-context";
+import { useRouter } from "next/navigation";
 
 
 export default function Page() {
     const { user, gitHubSignIn, firebaseSignOut } = useUserAuth();
 
+    const router = useRouter();
     const [items, setItems] = useState(itemData);
     const [selectedItemName, setSelectedItemName] = useState('');
     const [sortBy, setSortBy] = useState("name");
     const [categoryEnabled, setCategoryEnabled] = useState(true);
     const [nameEnabled, setNameEnabled] = useState(true);
+
+    const home = async () => {
+        router.push("/");
+    };
 
     function handleSortChange() {
         if(sortBy === 'category') {
@@ -51,9 +57,10 @@ export default function Page() {
     if (!user) {
         return (
             <main>
-                <h1>Week 9 Shopping List App</h1>
-                <button onClick={gitHubSignIn}>Login with GitHub</button>
-                <p>Please log in to see the shopping list</p>
+                <h1 className="text-3xl font-bold m-2">Shopping List App</h1>
+                <p className="m-2">Please log in to see the shopping list</p>
+                <button className="bg-red-300 hover:bg-red-400 text-white font-bold py-2 px-4 rounded ml-6 mt-3" onClick={gitHubSignIn}>Login with GitHub</button>
+                <button className="bg-red-300 hover:bg-red-400 text-white font-bold py-2 px-4 rounded ml-6 mt-3" onClick={home}>Index</button>
             </main>
         );
     }
@@ -83,7 +90,8 @@ export default function Page() {
                 <section className="flex">
                     <ItemList items={items} onItemSelect={handleItemSelect}/>
                 </section>
-                <button onClick={firebaseSignOut}>Logout</button>
+                <button className="bg-red-300 hover:bg-red-400 text-white font-bold py-2 px-4 rounded ml-6 mt-3" onClick={firebaseSignOut}>Logout</button>
+                <button className="bg-red-300 hover:bg-red-400 text-white font-bold py-2 px-4 rounded ml-6 mt-3" onClick={home}>Index</button>
                 </div>
 
                 <div className="w-2/3 ml-3 max-h-full overflow-y-auto">
