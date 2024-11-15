@@ -46,16 +46,15 @@ export const addItem = async (userId, item) => {
     }
 };
 
-export const removeItem = async (userId, itemId) => {
+export const removeItem = async (userId, docId) => {
     try {
-        if (!userId || !itemId) {
-            throw new Error("User ID and Item ID are required");
-        }
-
-        const itemDoc = doc(db, "users", userId, "items", itemId); // Path to the specific item document
+        // Ensure userId and docId are strings
+        const itemDoc = doc(db, "users", String(userId), "items", String(docId));
+        console.log("Attempting to delete document at path:", itemDoc.path);
+        
         await deleteDoc(itemDoc);
-        console.log("Item removed successfully");
-    } catch (e) {
-        console.error("Error removing item:", e);
+        console.log(`Item ${docId} removed successfully from Firestore`);
+    } catch (error) {
+        console.error("Error during Firestore deletion:", error.message, error);
     }
 };

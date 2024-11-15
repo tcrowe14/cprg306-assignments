@@ -4,26 +4,19 @@ import Item from "./item";
 
 export default function ItemList({ items, onItemSelect, onRemoveItem }) {
     return (
-        <ul className="space-y-3 w-80">
+        <ul className="space-y-3 w-96">
             {items.map((item) => (
-                <li key={item.id}>
-
+                <li key={item.id}> {/* Firestore document ID as key */}
                     <Item 
                         name={item.name} 
                         quantity={item.quantity} 
                         category={item.category} 
                         onSelect={() => onItemSelect(item.name)}
+                        onRemove={() => onRemoveItem(item.id)} // Use Firestore document ID here
                     />
-
-                    <button
-                        className="bg-red-500 text-white py-1 px-3 rounded ml-4"
-                        onClick={() => onRemoveItem(item.id)} // Correctly invoke onRemoveItem with item id
-                    >
-                        Remove
-                    </button>
-
                 </li>
             ))}
         </ul>
     );
 }
+

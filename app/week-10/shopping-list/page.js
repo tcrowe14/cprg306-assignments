@@ -54,21 +54,29 @@ export default function Page() {
         }
     };
 
-    const handleRemoveItem = async (itemId) => {
+    const handleRemoveItem = async (docId) => {
         try {
-            await removeItem(user.uid, itemId); // Remove item from the database
-            setItems((prevItems) => prevItems.filter((item) => item.id !== itemId)); // Update local state
+            // Ensure docId is a string when calling removeItem
+            await removeItem(user.uid, String(docId));
+            setItems((prevItems) => prevItems.filter((item) => item.id !== docId));
         } catch (error) {
             console.error("Error removing item:", error);
         }
     };
     
-
     const getButtonStyles = (sortType) => {
         return sortBy === sortType
             ? "bg-red-400 text-white hover:bg-red-400 active:ring-2 active:ring-red-400 hover:active:ring-red-400"
             : "bg-red-200 text-black hover:bg-green-500 active:ring-2 active:ring-green-500 hover:active:ring-green-500";
     };
+
+    function handleItemSelect(itemName) {
+        let finishedStr = itemName.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
+        finishedStr = finishedStr.trim();
+        finishedStr = finishedStr.split(",")[0];
+
+        setSelectedItemName(finishedStr);
+    }
 
     if (!user) {
         return (
@@ -103,7 +111,7 @@ export default function Page() {
                         </button>
                     </div>
                     <section className="flex">
-                    <ItemList items={items} onItemSelect={setSelectedItemName} onRemoveItem={handleRemoveItem} />
+                    <ItemList items={items} onItemSelect={handleItemSelect} onRemoveItem={handleRemoveItem} />
                     </section>
                     <button className="bg-red-300 hover:bg-red-400 text-white font-bold py-2 px-4 rounded ml-6 mt-3" onClick={firebaseSignOut}>Logout</button>
                     <button className="bg-red-300 hover:bg-red-400 text-white font-bold py-2 px-4 rounded ml-6 mt-3" onClick={() => router.push("/")}>Index</button>
