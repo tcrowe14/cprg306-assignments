@@ -16,6 +16,7 @@ export default function Page() {
     const [sortBy, setSortBy] = useState("name");
 
     useEffect(() => {
+        console.log("Current items:", items);
         const loadItems = async () => {
             if (user) {
                 try {
@@ -45,25 +46,29 @@ export default function Page() {
 
     const handleAddItem = async (newItem) => {
         try {
-            const itemId = await addItem(user.uid, newItem);
-            const itemWithId = { ...newItem, id: itemId };
-            setItems((prevItems) => [...prevItems, itemWithId]);
-            sortItems(sortBy, [...items, itemWithId]);
+            const docId = await addItem(user.uid, newItem); // Get Firestore's document ID
+            const itemWithId = { ...newItem, docId }; // Add the Firestore document ID to the new item
+            setItems((prevItems) => [...prevItems, itemWithId]); // Update the state with the new item
+            sortItems(sortBy, [...items, itemWithId]); // Ensure sorting is consistent
         } catch (error) {
             console.error("Error adding item:", error);
         }
     };
-
+     
     const handleRemoveItem = async (docId) => {
         try {
-            // Ensure docId is a string when calling removeItem
-            await removeItem(user.uid, String(docId));
-            setItems((prevItems) => prevItems.filter((item) => item.id !== docId));
+            if (!docId) {
+                console.error("Invalid docId provided for removal:", docId);
+                return;
+            }
+            console.log(`Removing item with userId: ${user.uid} and docId: ${docId}`);
+            await removeItem(user.uid, docId);
+            setItems((prevItems) => prevItems.filter((item) => item.docId !== docId)); // Filter using `docId`
         } catch (error) {
-            console.error("Error removing item:", error);
+            console.error("Error during Firestore deletion:", error);
         }
-    };
-    
+    };    
+       
     const getButtonStyles = (sortType) => {
         return sortBy === sortType
             ? "bg-red-400 text-white hover:bg-red-400 active:ring-2 active:ring-red-400 hover:active:ring-red-400"
