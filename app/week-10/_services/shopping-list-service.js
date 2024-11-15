@@ -7,7 +7,8 @@ import {
     onSnapshot, 
     query, 
     doc, 
-    where 
+    where,
+    deleteDoc
 } from "firebase/firestore";
 
 // Function to retrieve all items for a specific user
@@ -42,5 +43,19 @@ export const addItem = async (userId, item) => {
         return itemRef.id;
     } catch (e) {
         console.error("Error in addItem:", e);
+    }
+};
+
+export const removeItem = async (userId, itemId) => {
+    try {
+        if (!userId || !itemId) {
+            throw new Error("User ID and Item ID are required");
+        }
+
+        const itemDoc = doc(db, "users", userId, "items", itemId); // Path to the specific item document
+        await deleteDoc(itemDoc);
+        console.log("Item removed successfully");
+    } catch (e) {
+        console.error("Error removing item:", e);
     }
 };

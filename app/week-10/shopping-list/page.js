@@ -6,7 +6,7 @@ import NewItem from "./new-item";
 import { useState, useEffect } from "react";
 import { useUserAuth } from "../_utils/auth-context";
 import { useRouter } from "next/navigation";
-import { getItem, addItem } from "../_services/shopping-list-service";
+import { getItem, addItem, removeItem } from "../_services/shopping-list-service"; // Import removeItem
 
 export default function Page() {
     const { user, gitHubSignIn, firebaseSignOut } = useUserAuth();
@@ -16,13 +16,12 @@ export default function Page() {
     const [sortBy, setSortBy] = useState("name");
 
     useEffect(() => {
-        // Load items from the database when the user logs in
         const loadItems = async () => {
             if (user) {
                 try {
                     const loadedItems = await getItem(user.uid);
                     setItems(loadedItems || []);
-                    sortItems("name", loadedItems || []); // Initial sort by name
+                    sortItems("name", loadedItems || []);
                 } catch (e) {
                     console.error("Error loading items", e);
                 }
@@ -49,11 +48,21 @@ export default function Page() {
             const itemId = await addItem(user.uid, newItem);
             const itemWithId = { ...newItem, id: itemId };
             setItems((prevItems) => [...prevItems, itemWithId]);
-            sortItems(sortBy, [...items, itemWithId]); // Maintain current sort order
+            sortItems(sortBy, [...items, itemWithId]);
         } catch (error) {
             console.error("Error adding item:", error);
         }
     };
+
+    const handleRemoveItem = async (itemId) => {
+        try {
+            await removeItem(user.uid, itemId); // Remove item from the database
+            setItems((prevItems) => prevItems.filter((item) => item.id !== itemId)); // Update local state
+        } catch (error) {
+            console.error("Error removing item:", error);
+        }
+    };
+    
 
     const getButtonStyles = (sortType) => {
         return sortBy === sortType
@@ -94,13 +103,13 @@ export default function Page() {
                         </button>
                     </div>
                     <section className="flex">
-                        <ItemList items={items} onItemSelect={setSelectedItemName} />
+                    <ItemList items={items} onItemSelect={setSelectedItemName} onRemoveItem={handleRemoveItem} />
                     </section>
                     <button className="bg-red-300 hover:bg-red-400 text-white font-bold py-2 px-4 rounded ml-6 mt-3" onClick={firebaseSignOut}>Logout</button>
                     <button className="bg-red-300 hover:bg-red-400 text-white font-bold py-2 px-4 rounded ml-6 mt-3" onClick={() => router.push("/")}>Index</button>
                 </div>
                 <div className="w-2/3 ml-3 max-h-full overflow-y-auto">
-                    <h1 className="text-3xl font-bold m-2">Meal Ideas</h1>
+                    <h1 className="text-3xl font-bold m-2">Meal Ideas for {selectedItemName}</h1>
                     <MealIdeas ingredient={selectedItemName} />
                 </div>
             </main>
